@@ -1,0 +1,8 @@
+# 构建产物
+build/
+*.o
+*.elf
+*.bin
+*.map
+*.lst
+*.d
