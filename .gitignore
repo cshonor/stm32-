@@ -3,6 +3,22 @@ build/
 *.o
 *.elf
 *.bin
+*.hex
 *.map
 *.lst
 *.d
+*.a
+
+# 调试器 / 烧录工具日志
+*.log
+openocd.cfg.bak
+
+# IDE / 编辑器
+.vscode/
+.idea/
+*.code-workspace
+
+# 系统垃圾
+.DS_Store
+Thumbs.db
+desktop.ini

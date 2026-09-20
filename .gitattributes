@@ -1,0 +1,11 @@
+# 行尾统一 LF（跨 Windows/macOS 协作，避免 CRLF 漂移导致 status 恒脏）
+* text=auto eol=lf
+
+# 二进制文件不做任何转换
+*.png binary
+*.jpg binary
+*.pdf binary
+*.bin binary
+*.hex binary
+*.elf binary
+*.axf binary

@@ -24,7 +24,7 @@ freertos/     FreeRTOS 移植与任务实验（等裸机三件套通了再进）
 | 5 | 时钟树与 UART | labs/04-uart-printf | ⬜ |
 | 6 | 中断与 EXTI | labs/05-exti-button | ⬜ |
 | 7 | SysTick / 定时器 | labs/06-timer | ⬜ |
-| 8 | FreeRTOS：任务/调度/队列/信号量 | freertos/01-… | ⬜ |
+| 8 | FreeRTOS：任务/调度/队列/信号量 | freertos/01-hello-task | ⬜ |
 
 ## 与 LDD- 轨的概念对照（学两遍 = 记两遍）
 
