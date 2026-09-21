@@ -11,6 +11,7 @@
 book-notes/   书的逐章笔记（只记"我理解的+我实测的"，不抄书）
 labs/         裸机实验（寄存器级，不依赖 HAL：led/uart/gpio_exti/timer）
 freertos/     FreeRTOS 移植与任务实验（等裸机三件套通了再进）
+zephyr/       Zephyr 实验区（第二遍的工程化路线，最后走）
 ```
 
 ## 学习路线（书章节 → 实验）
@@ -25,6 +26,9 @@ freertos/     FreeRTOS 移植与任务实验（等裸机三件套通了再进）
 | 6 | 中断与 EXTI | labs/05-exti-button | ⬜ |
 | 7 | SysTick / 定时器 | labs/06-timer | ⬜ |
 | 8 | FreeRTOS：任务/调度/队列/信号量 | freertos/01-hello-task | ⬜ |
+
+**第二遍（工程化路线）**：labs + freertos 全通后进 `zephyr/`——devicetree / Kconfig /
+west 与 Linux 机制同源，实验与 freertos/ 一一对照，规划见 `zephyr/README.md`。
 
 ## 与 LDD- 轨的概念对照（学两遍 = 记两遍）
 
