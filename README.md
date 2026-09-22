@@ -18,7 +18,8 @@ zephyr/       Zephyr 实验区（第二遍的工程化路线，最后走）
 
 | # | 书主题 | 对应实验 | 状态 |
 |---|---|---|---|
-| 1 | 开发环境（arm-none-eabi-gcc + OpenOCD/ST-Link） | 点不了灯先编过 | ⬜ 待板子 |
+| 0 | 工具链（**不用 GCC**：clang + ld.lld + llvm 二进制工具） | labs/00-toolchain-clang | ✅ 主机侧实测 |
+| 1 | 开发环境（烧录链路 + OpenOCD/ST-Link） | 点不了灯先编过 | ⬜ 待板子 |
 | 2 | 启动文件、向量表、上电到 main | labs/01-startup | ⬜ |
 | 3 | 链接脚本（Flash/RAM 布局） | labs/02-linker | ⬜ |
 | 4 | 寄存器与 CMSIS 头（GPIO 点灯） | labs/03-gpio-blink | ⬜ |
@@ -42,7 +43,10 @@ west 与 Linux 机制同源，实验与 freertos/ 一一对照，规划见 `zeph
 ## 硬件
 
 - 板：STM32F103C8T6（Blue Pill）或 NUCLEO-F103RB（待确认到货）
-- 调试：ST-Link V2；交叉链 arm-none-eabi-gcc（Mac 端 micromamba 可装）
+- 调试：ST-Link V2
+- 交叉链：**不用装 arm-none-eabi-gcc** —— Mac 端实测走 micromamba `cdev` 里的
+  clang 23.1.0 + ld.lld 23.1.0 + llvm-objcopy/objdump/readelf，全程 `-nostdlib`，
+  产出 296 字节可烧写镜像。踩过的坑见 `labs/00-toolchain-clang/README.md`
 
 ## 纪律（沿用 LDD- 惯例）
 
