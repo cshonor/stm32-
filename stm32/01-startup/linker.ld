@@ -1,6 +1,6 @@
-/* linker.ld —— labs/01-startup 的地图
+/* linker.ld —— stm32/01-startup 的地图
  *
- * 与 labs/00 的差别只有三处，都是"启动"这件事逼出来的：
+ * 与 stm32/00 的差别只有三处，都是"启动"这件事逼出来的：
  *   1. 段名改用 .isr_vector（ST 官方 startup_stm32f103xb.s 用的名字；
  *      00 里叫 .vectors 只是我们自己定的 —— 段名不重要，链接脚本对上就行）
  *   2. KEEP(*(.isr_vector)) 单独成段 + 两条 ASSERT 自检

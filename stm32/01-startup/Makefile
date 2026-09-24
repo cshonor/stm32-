@@ -1,10 +1,10 @@
-# Makefile —— labs/01-startup：从复位向量到 main
+# Makefile —— stm32/01-startup：从复位向量到 main
 #
-# 与 labs/00 同一套工具链（clang + ld.lld + llvm-*，不需要 arm-none-eabi-gcc），
+# 与 stm32/00 同一套工具链（clang + ld.lld + llvm-*，不需要 arm-none-eabi-gcc），
 # 但这次同时构建两个变体，用来对照"启动文件用 C 写还是用汇编写"：
 #
 #   blink_asm.elf   ← startup.S （汇编版，本书主线）
-#   blink_c.elf     ← startup_c.c（C 版，labs/00 的延续）
+#   blink_c.elf     ← startup_c.c（C 版，stm32/00 的延续）
 #
 # 本目录所有实测输出见 README.md
 #
@@ -128,7 +128,7 @@ check-stack:
 
 # 7. 链接脚本能不能被 lld 吃下
 # ⚠ 不要用 `ld.lld -T linker.ld --verbose` 做"语法检查"：lld 不支持 --verbose，
-#    没有输入文件时直接报 "no input files"（实测 labs/00 的 check-lds 就是这么坏的）。
+#    没有输入文件时直接报 "no input files"（实测 stm32/00 的 check-lds 就是这么坏的）。
 #    有效验证 = 拿真实目标文件链接一次。
 check-lds: startup_s.o main.o linker.ld linker-nokeep.ld
 	@$(LD) -T linker.ld --gc-sections -o /tmp/lds-ok.elf startup_s.o main.o \

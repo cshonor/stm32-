@@ -1,6 +1,6 @@
 # book-notes —— 《裸机C编程》逐章笔记
 
-定位：**只记"我理解的 + 我实测的"，不抄书**。每章笔记对应一个 labs/ 实验，
+定位：**只记"我理解的 + 我实测的"，不抄书**。每章笔记对应一个 stm32/ 实验，
 笔记里写原理与坑，实验目录里放代码与实测输出。
 
 - 章节笔记命名：`chNN-主题.md`（如 `ch02-startup.md`），与主 README 学习路线表对齐
@@ -13,10 +13,10 @@
 
 | 篇 | 主题 | 对应实验 | 状态 |
 |---|---|---|---|
-| [ch01](ch01-toolchain.md) | 开发环境与心智模型：没有 OS、没有 GCC，C 怎么碰到硬件 | labs/00-toolchain-clang | ✅ 主机侧实测 |
-| ch02 | 启动文件与向量表（上电到 main） | labs/01-startup | ⬜ 待板子 |
-| ch03 | 链接脚本（Flash/RAM 布局） | labs/02-linker | ⬜ 待板子 |
-| ch04 | 寄存器与 CMSIS 头（GPIO 点灯） | labs/03-gpio-blink | ⬜ 待板子 |
-| ch05 | 时钟树与 UART（printf retarget） | labs/04-uart-printf | ⬜ 待板子 |
-| ch06 | 中断与 EXTI | labs/05-exti-button | ⬜ 待板子 |
-| ch07 | SysTick / 定时器 | labs/06-timer | ⬜ 待板子 |
+| [ch01](ch01-toolchain.md) | 开发环境与心智模型：没有 OS、没有 GCC，C 怎么碰到硬件 | stm32/00-toolchain-clang | ✅ 主机侧实测 |
+| ch02 | 启动文件与向量表（上电到 main） | stm32/01-startup | ⬜ 待板子 |
+| ch03 | 链接脚本（Flash/RAM 布局） | stm32/02-linker | ⬜ 待板子 |
+| ch04 | 寄存器与 CMSIS 头（GPIO 点灯） | stm32/03-gpio-blink | ⬜ 待板子 |
+| ch05 | 时钟树与 UART（printf retarget） | stm32/04-uart-printf | ⬜ 待板子 |
+| ch06 | 中断与 EXTI | stm32/05-exti-button | ⬜ 待板子 |
+| ch07 | SysTick / 定时器 | stm32/06-timer | ⬜ 待板子 |

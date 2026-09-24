@@ -1,6 +1,6 @@
 /* startup.S —— 用汇编写启动文件（对照 startup_c.c：同一张表的两种写法）
  *
- * ch01 留下的问题：labs/00 把启动代码写在 C 里（"不写汇编也能起"）。
+ * ch01 留下的问题：stm32/00 把启动代码写在 C 里（"不写汇编也能起"）。
  * 那么真·启动文件长什么样？为什么工业界的启动文件几乎一律是 .s？
  *
  * 这段汇编只干四件事，和 C 版一一对应：
@@ -51,7 +51,7 @@ g_vectors:
     .word   DebugMon_Handler        /* 12  调试监视器                      */
     .word   0                       /* 13  保留                            */
     .word   PendSV_Handler          /* 14  PendSV：RTOS 的上下文切换点     */
-    .word   SysTick_Handler         /* 15  SysTick：RTOS 的心跳（labs/06） */
+    .word   SysTick_Handler         /* 15  SysTick：RTOS 的心跳（stm32/06） */
 
     /* 16 起是厂商外设中断。STM32F103 的中断号从 0 开始（RM0008 Table 63），
      * 这里只铺前 8 个示意，其余照抄手册往下排即可。 */
@@ -61,7 +61,7 @@ g_vectors:
     .word   RTC_IRQHandler          /* 19  IRQ3  实时时钟                  */
     .word   FLASH_IRQHandler        /* 20  IRQ4  Flash 操作完成            */
     .word   RCC_IRQHandler          /* 21  IRQ5  时钟系统                  */
-    .word   EXTI0_IRQHandler        /* 22  IRQ6  外部中断线 0（labs/05）   */
+    .word   EXTI0_IRQHandler        /* 22  IRQ6  外部中断线 0（stm32/05）   */
     .word   EXTI1_IRQHandler        /* 23  IRQ7  外部中断线 1              */
 
     .size   g_vectors, . - g_vectors

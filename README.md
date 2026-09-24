@@ -9,11 +9,11 @@
 
 ```
 book-notes/   书的逐章笔记（只记"我理解的+我实测的"，不抄书）
-labs/         裸机实验（寄存器级，不依赖 HAL：led/uart/gpio_exti/timer）
-  02b-…/      旁支：库路线（libopencm3），与章节编号主线并行、不替代
+stm32/         裸机实验（寄存器级，不依赖 HAL：led/uart/gpio_exti/timer）
+  STM32/      旁支：库路线（libopencm3），与章节编号主线并行、不替代
 freertos/     FreeRTOS 移植与任务实验（等裸机三件套通了再进）
 zephyr/       Zephyr 实验区（第二遍的工程化路线，最后走）
-third_party/  git 子模块：libopencm3（labs/02b 用；clone 后先 git submodule update --init）
+third_party/  git 子模块：libopencm3（stm32/STM32 用；clone 后先 git submodule update --init）
 _refs/        只作参考的上游克隆，不进版本库（如 libopencm3-examples）
 ```
 
@@ -21,16 +21,16 @@ _refs/        只作参考的上游克隆，不进版本库（如 libopencm3-exa
 
 | # | 书主题 | 对应实验 | 状态 |
 |---|---|---|---|
-| 0 | 工具链（**不用 GCC**：clang + ld.lld + llvm 二进制工具） | labs/00-toolchain-clang | ✅ 主机侧实测 |
+| 0 | 工具链（**不用 GCC**：clang + ld.lld + llvm 二进制工具） | stm32/00-toolchain-clang | ✅ 主机侧实测 |
 | 1 | 开发环境（烧录链路 + OpenOCD/ST-Link） | 点不了灯先编过 | ⬜ 待板子 |
-| 2 | 启动文件、向量表、上电到 main | labs/01-startup | ✅ 主机侧实测 |
-| 3 | 链接脚本（Flash/RAM 布局） | labs/02-linker | ⬜ |
-| 4 | 寄存器与 CMSIS 头（GPIO 点灯） | labs/03-gpio-blink | ⬜ |
-| 5 | 时钟树与 UART | labs/04-uart-printf | ⬜ |
-| 6 | 中断与 EXTI | labs/05-exti-button | ⬜ |
-| 7 | SysTick / 定时器 | labs/06-timer | ⬜ |
+| 2 | 启动文件、向量表、上电到 main | stm32/01-startup | ✅ 主机侧实测 |
+| 3 | 链接脚本（Flash/RAM 布局） | stm32/02-linker | ⬜ |
+| 4 | 寄存器与 CMSIS 头（GPIO 点灯） | stm32/03-gpio-blink | ⬜ |
+| 5 | 时钟树与 UART | stm32/04-uart-printf | ⬜ |
+| 6 | 中断与 EXTI | stm32/05-exti-button | ⬜ |
+| 7 | SysTick / 定时器 | stm32/06-timer | ⬜ |
 | 8 | FreeRTOS：任务/调度/队列/信号量 | freertos/01-hello-task | ⬜ |
-| 旁支 | 库路线：libopencm3（≠ HAL） | labs/STM32 | ✅ 主机侧实测 |
+| 旁支 | 库路线：libopencm3（≠ HAL） | stm32/STM32 | ✅ 主机侧实测 |
 
 **第二遍（工程化路线）**：labs + freertos 全通后进 `zephyr/`——devicetree / Kconfig /
 west 与 Linux 机制同源，实验与 freertos/ 一一对照，规划见 `zephyr/README.md`。
@@ -52,13 +52,13 @@ west 与 Linux 机制同源，实验与 freertos/ 一一对照，规划见 `zeph
 - 调试：ST-Link V2
   - OpenOCD 已装（xpack 0.12.0 darwin-arm64 原生构建，2.3 MB），脚本根在
     `~/.local/xpack-openocd-0.12.0-7/openocd/scripts`
-  - 烧录配置两份：`labs/STM32/openocd/f103rb.cfg`（NUCLEO 板载 ST-Link）、
+  - 烧录配置两份：`stm32/STM32/openocd/f103rb.cfg`（NUCLEO 板载 ST-Link）、
     `openocd/generic-stlink-f103.cfg`（外接 ST-Link + 裸板）
 - 交叉链（两条，按 lab 选）：
-  - **不用装 GCC 的一条**（labs/00–01）：Mac 端实测走 micromamba `cdev` 里的
+  - **不用装 GCC 的一条**（stm32/00–01）：Mac 端实测走 micromamba `cdev` 里的
     clang 23.1.0 + ld.lld 23.1.0 + llvm-objcopy/objdump/readelf，全程 `-nostdlib`，
-    产出 296 字节可烧写镜像。踩过的坑见 `labs/00-toolchain-clang/README.md`
-  - **GNU 一条**（labs/02b 及以后用库的场合）：Arm GNU Toolchain 14.2.Rel1
+    产出 296 字节可烧写镜像。踩过的坑见 `stm32/00-toolchain-clang/README.md`
+  - **GNU 一条**（stm32/STM32 及以后用库的场合）：Arm GNU Toolchain 14.2.Rel1
     （darwin-arm64 官方包，装在 `~/.local/arm-gnu-toolchain-14.2.rel1-darwin-arm64-arm-none-eabi/`），
     libopencm3 的官方目标就是它
     - 本机没有 WSL / apt / docker，conda-forge 也没有 arm-none-eabi →

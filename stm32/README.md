@@ -3,7 +3,7 @@
 每个实验一个目录：`NN-name/`（startup.S / main.c / linker.ld / Makefile + README）。
 规则：**不依赖 HAL 库**，直接对着参考手册（RM0008）写寄存器；HAL 是第二遍学习的事。
 
-例外：`02b` 是并行的**库路线**旁支，专门对比"用库"的写法与代价（libopencm3 不是 HAL，
+例外：`STM32` 是并行的**库路线**旁支，专门对比"用库"的写法与代价（libopencm3 不是 HAL，
 是"能读完的寄存器库"），不替代主线章节实验。
 
 - 00-toolchain-clang：**不需要 arm-none-eabi-gcc**，用 clang + ld.lld 走通
@@ -28,7 +28,7 @@
   - 工具链换成 GNU：Arm GNU Toolchain 14.2.Rel1（darwin-arm64 官方包，装在 `~/.local`）；
     同机还装了 xpack OpenOCD 0.12.0（2.3 MB）
   - 烧录配置：`openocd/f103rb.cfg`（NUCLEO 板载 ST-Link）/ `openocd/generic-stlink-f103.cfg`（外接）
-  - 自检目标：`make vectors`（通用版断言，同一份脚本对 labs/01 的 clang 产物也通过）
+  - 自检目标：`make vectors`（通用版断言，同一份脚本对 stm32/01 的 clang 产物也通过）
     / `size` / `dump` / `lib` / `flash` / `openocd` / `gdb`
   - 坑点：GNU make 的赋值行尾注释会把空白带进变量值，报错指向无关目录（README 有最小复现）
 - 03-gpio-blink：寄存器点灯，第一盏自己的灯（书 ch4）

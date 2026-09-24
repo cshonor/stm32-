@@ -1,5 +1,5 @@
 # =============================================================================
-# labs/STM32/Makefile
+# stm32/STM32/Makefile
 #
 # 这份 Makefile 只写「我的工程」，其余全部交给 libopencm3 自己的 mk/ 模块。
 # 契约来自 libopencm3/mk/README（官方原文）：
@@ -105,7 +105,7 @@ all: $(BINARY).elf $(BINARY).bin $(BINARY).hex
 lib:
 	$(MAKE) -C $(OPENCM3_DIR) TARGETS=$(OPENCM3_TARGET)
 
-# 体积账单，用来和 labs/01 手写版对比
+# 体积账单，用来和 stm32/01 手写版对比
 size: $(BINARY).elf
 	$(SIZE) $(BINARY).elf
 	@echo "--- 各段明细 ---"

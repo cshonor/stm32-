@@ -8,7 +8,7 @@
 所以它写错了不会有任何编译/链接期提示，只会在真机上"上电就跑飞"。
 
 - 主线教材对照：ch02「启动文件与向量表」
-- 上一站：`labs/00-toolchain-clang`（同一套 clang + ld.lld 工具链，全程 `-nostdlib`）
+- 上一站：`stm32/00-toolchain-clang`（同一套 clang + ld.lld 工具链，全程 `-nostdlib`）
 - 全部命令在 macOS 26.6.2 (arm64) + micromamba `cdev`（clang 23.1.0 / lld 23.1.0）实测
 
 ## 三个问题，本目录逐个给实测答案
@@ -23,7 +23,7 @@
 
 ```
 startup.S            汇编版启动文件（本书主线）：向量表 + Reset_Handler + 弱别名兜底
-startup_c.c          C 版启动文件（labs/00 的延续，用 __attribute__ 复刻同结构）
+startup_c.c          C 版启动文件（stm32/00 的延续，用 __attribute__ 复刻同结构）
 main.c               最小 main：只验证 .data 搬运 / .bss 清零；含 .noinit 启动面包屑
 isr-probe.c          探针：naked vs 普通函数、FPU 在 ISR 里的问题（不参与链接）
 linker.ld            芯片地图 + 向量表断言（ASSERT）+ .noinit 段
@@ -38,7 +38,7 @@ blink_c.elf/.bin     C 版产物（320 字节）
 
 ```bash
 export PATH=/Users/a0000/micromamba/envs/cdev/bin:$PATH
-cd labs/01-startup
+cd stm32/01-startup
 
 make                 # 两个变体都构建 + size
 make vectors         # ★ 向量表断言（24 项逐项校验，不需要板子）
@@ -322,7 +322,7 @@ __attribute__((section(".noinit"))) volatile u8 boot_stage;
 
 | # | 现象 | 原因 / 解法 |
 |---|---|---|
-| 1 | `ld.lld -T linker.ld --verbose` 报 `no input files`，退出码 2 | lld **不支持 `--verbose`**，没有输入文件直接报错。这导致 labs/00 的 `make check-lds` 一直是坏的（README 却把它列为可用自检）—— 已修：改成"拿真实 .o 链接一次"才是有效验证 |
+| 1 | `ld.lld -T linker.ld --verbose` 报 `no input files`，退出码 2 | lld **不支持 `--verbose`**，没有输入文件直接报错。这导致 stm32/00 的 `make check-lds` 一直是坏的（README 却把它列为可用自检）—— 已修：改成"拿真实 .o 链接一次"才是有效验证 |
 | 2 | 去掉 `ENTRY()` 后 `--gc-sections` 把**所有**段清成 0 | `cannot find entry symbol _start` → GC 没有任何根。**对照实验要单变量**，别把两个原因混在一版里 |
 | 3 | 向量表段被链接器静默丢掉，链接不报错 | 向量表是数据、无人引用 → `--gc-sections` 收走。必须 `KEEP(*(.isr_vector))`。`__attribute__((used))` 挡不住（那只管编译期） |
 | 4 | 启动面包屑变量放 `.bss` 里永远是 0 | 被自己的 `.bss` 清零循环抹掉。需要"不被初始化"的变量放 `NOLOAD` 段（`.noinit`） |

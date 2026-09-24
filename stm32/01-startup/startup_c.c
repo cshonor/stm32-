@@ -1,6 +1,6 @@
 /* startup_c.c —— 同一张表的 C 写法（对照 startup.S，结论见 README「两种写法等价」）
  *
- * 和 labs/00 的 startup.c 是同一思路，但这次把向量表铺满 24 项、
+ * 和 stm32/00 的 startup.c 是同一思路，但这次把向量表铺满 24 项、
  * 并且用 __attribute__((weak, alias(...))) 复刻汇编版的 .weak + .thumb_set。
  *
  * 写这段的目的一半是对照，一半是回答"启动文件为什么通常用汇编"：

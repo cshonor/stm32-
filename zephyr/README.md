@@ -1,6 +1,6 @@
 # zephyr —— Zephyr 实验区（第二遍）
 
-定位：**第二遍走的工程化路线**。labs/（裸机寄存器）和 freertos/（调度原理）
+定位：**第二遍走的工程化路线**。stm32/（裸机寄存器）和 freertos/（调度原理）
 全部真机跑通后才进这里——Zephyr 抽象层厚，没有裸机底子会被包死在框架里。
 
 ## 为什么值得走第二遍
@@ -12,7 +12,7 @@
 
 ## 前置
 
-- labs/01–06 + freertos/01–04 真机全通
+- stm32/01–06 + freertos/01–04 真机全通
 - 板：NUCLEO-F103RB（官方 target `nucleo_f103rb`）或 Blue Pill（`stm32_min_dev_blue`）
 - 无板也能起步：`qemu_cortex_m3` target 可在 QEMU 里跑通前两个实验
 

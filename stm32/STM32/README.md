@@ -1,6 +1,6 @@
 # STM32 —— 不写寄存器，第一次用「库」
 
-> **旁支（库路线）**：编号 02b，与章节编号的 `labs/` 主线并行、互不替代。
+> **旁支（库路线）**：目录直接叫 `STM32`，与 `stm32/` 下按章节编号的主线并行、互不替代。
 > 主线（`00/01/02-linker/03-gpio...`）是"对着 RM0008 自己写寄存器"；
 > 这条支线回答另一个问题：**如果有一个能读懂的库，同样的灯怎么写、代价是多少。**
 >
@@ -22,7 +22,7 @@
 ```
 main.c                 唯一的手写代码：开时钟 → 配 PA5 → 闪
 Makefile               构建契约（只写"我的工程"，其余交给库的 mk/ 模块）
-check_vectors.py       通用版向量表断言（labs/01 那份是严格版，这份认不出符号名也能用）
+check_vectors.py       通用版向量表断言（stm32/01 那份是严格版，这份认不出符号名也能用）
 openocd/f103rb.cfg           板载 ST-Link 烧录配置（NUCLEO-F103RB 板卡脚本）
 openocd/generic-stlink-f103.cfg  外接 ST-Link + 裸 F103 板用
 ```
@@ -34,7 +34,7 @@ openocd/generic-stlink-f103.cfg  外接 ST-Link + 裸 F103 板用
 
 ```bash
 export PATH="$HOME/.local/arm-gnu-toolchain-14.2.rel1-darwin-arm64-arm-none-eabi/bin:$PATH"
-cd labs/STM32
+cd stm32/STM32
 make            # 库没编会自动先编库，再编应用，一条命令到底
 ```
 
@@ -240,10 +240,10 @@ $ make vectors
 | 数字 | 来历 |
 |---|---|
 | **84 项** | 16 个系统异常 + **68 个 IRQ**（`include/libopencm3/stm32/f1/irq.json` 里 `irqs` 数组长度实测 68） |
-| **0x20005000** | genlink 生成的 `PROVIDE(_stack = ORIGIN(ram) + LENGTH(ram))` = 0x20000000 + 20K。**和 labs/01 手写启动文件里那个 `_estack` 一模一样** —— 两条完全不同的路线推出了同一个数 |
+| **0x20005000** | genlink 生成的 `PROVIDE(_stack = ORIGIN(ram) + LENGTH(ram))` = 0x20000000 + 20K。**和 stm32/01 手写启动文件里那个 `_estack` 一模一样** —— 两条完全不同的路线推出了同一个数 |
 | **0x08000365** | `reset_handler` 在 0x08000364（`nm` 报的是偶数地址），向量表存的是 `|1` 的 Thumb 地址 |
 
-**这项断言比 labs/01 那份难写**，原因是实测发现：libopencm3 的链接脚本把 `.vectors`
+**这项断言比 stm32/01 那份难写**，原因是实测发现：libopencm3 的链接脚本把 `.vectors`
 输入段 KEEP 在 `.text` **里面**（看上面 ld 片段的第一行），所以 ELF 里**根本没有独立的向量表段**：
 
 ```
@@ -252,7 +252,7 @@ $ arm-none-eabi-objdump -h blink.elf
 ```
 
 于是断言脚本改成两级定位：先找独立段（`.isr_vector` / `.vectors`），找不到就找
-数据符号（`vector_table` 等）并用 `nm` 报的尺寸切片。**同一份脚本直接跑 labs/01 的
+数据符号（`vector_table` 等）并用 `nm` 报的尺寸切片。**同一份脚本直接跑 stm32/01 的
 clang 产物也通过**（那条路线有独立的 `.isr_vector` 段）：
 
 ```
@@ -264,7 +264,7 @@ clang 产物也通过**（那条路线有独立的 `.isr_vector` 段）：
 --- 结论：通过 ---
 ```
 
-两份脚本的分工：`labs/01` 那份是**严格版**（24 项的符号名都是手写的，能逐项点名比对）；
+两份脚本的分工：`stm32/01` 那份是**严格版**（24 项的符号名都是手写的，能逐项点名比对）；
 这份是**通用版**（库里 handler 由 `irq2nvic_h` 从 irq.json 生成，命名规则不同、项数随芯片变，
 所以只校验结构不变量）。
 
@@ -299,7 +299,7 @@ $ make size
 
 | 版本 | 镜像 | 向量表 | 说明 |
 |---|---|---|---|
-| labs/01 手写（clang + `-nostdlib`） | **296 B** | 96 B（24 项） | 只放自己实现的 handler，其余弱别名兜底 |
+| stm32/01 手写（clang + `-nostdlib`） | **296 B** | 96 B（24 项） | 只放自己实现的 handler，其余弱别名兜底 |
 | 本 lab（GCC + libopencm3 + newlib） | **1016 B** | 336 B（84 项） | 完整向量表 + 库函数 + libc |
 
 差 3.4 倍，但两个版本**编译器不同、libc 有无不同**，不能只归因于"库臃肿"：
@@ -332,7 +332,7 @@ $ make size
 - `RCC_GPIOA` 不是 `2`，而是 **`0x302`** —— libopencm3 把"哪个时钟寄存器（0x300=APB2）+ 哪一位（bit2=IOPAEN）"
   编码进了同一个常量，`rcc_periph_clock_enable()` 内部再做分发。
 - 寄存器基址（0x40010800）和延时常数（400000）都落成了 **`.word` 字面量**，不是立即数——
-  这是 ARMv7-M 的常数编码限制（`movw/movt` 或从字面量池取），和 labs/01 里看到的现象同源。
+  这是 ARMv7-M 的常数编码限制（`movw/movt` 或从字面量池取），和 stm32/01 里看到的现象同源。
 
 烧录文件是 Intel HEX（`blink.hex`），第一条记录就是扩展线性地址：
 
@@ -347,14 +347,14 @@ $ make size
 第一次 `make` 直接给了这么一句：
 
 ```
-make: *** .../labs/STM32/../../third_party/libopencm3: Is a directory.  Stop.
+make: *** .../stm32/STM32/../../third_party/libopencm3: Is a directory.  Stop.
 ```
 
 用 `make -d` 看到真正发生的事：
 
 ```
 Reading makefile '/tmp/v3.mk'...
-Reading makefile '/Users/.../labs/STM32/../../third_party/libopencm3' (search path)...
+Reading makefile '/Users/.../stm32/STM32/../../third_party/libopencm3' (search path)...
 ```
 
 make 把**库目录当成一个 makefile 去读了**。原因是我最初把注释写在了赋值行尾：
@@ -400,7 +400,7 @@ A=[x   ]  B=[x]          ← 三个空格进了值里
   （否则 GDB 里 `reset` 会失败）。
 - `make gdb` 断在 **`reset_handler`** 而不是 `main`：libopencm3 的启动序列
   （搬 `.data` → 清 `.bss` → 使能 `SCB_CCR_STKALIGN` → 调构造器 → 调 `main`）全在那里面，
-  比在 `main` 停住有用得多。这也是它和 labs/01 手写 `Reset_Handler` 的对照点。
+  比在 `main` 停住有用得多。这也是它和 stm32/01 手写 `Reset_Handler` 的对照点。
 
 **尚未验证**：本机没有任何 ST-Link / USB 串口（`system_profiler` 无 ST-Link 设备），
 所以烧录链路、GDB 读寄存器、HardFault 的 CFSR/HFSR 都还是空白。
@@ -427,4 +427,4 @@ A=[x   ]  B=[x]          ← 三个空格进了值里
   才是 72MHz，本 lab 故意不碰，留给 UART 那一节（波特率算错就看不到串口输出）
 - **对比实验**：同一功能用 libopencm3 / STM32 HAL / 寄存器直写三版，量代码行数与镜像大小
 - **`-lnosys`**：本 lab 没用到任何需要 syscall 的函数（没 printf），链接 `-lnosys` 只是占位；
-  真要 `printf` 时得自己实现 `_write()` 接到 USART，那才是 labs/04 的正题
+  真要 `printf` 时得自己实现 `_write()` 接到 USART，那才是 stm32/04 的正题

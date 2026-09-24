@@ -7,7 +7,7 @@
 #   而且不会有任何编译/链接期提示（见 linker-nokeep.ld 的实测）。
 #   所以它需要断言，就像业务代码需要单测。
 #
-# 用法（在 labs/01-startup 下）：
+# 用法（在 stm32/01-startup 下）：
 #   python3 check_vectors.py blink_asm.elf blink_c.elf          # 逐项校验
 #   python3 check_vectors.py --expect-fail blink_asm_nokeep.elf # 反面教材：预期它挂
 #   python3 check_vectors.py --diff blink_asm.elf blink_c.elf   # 对比两种写法

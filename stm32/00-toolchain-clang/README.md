@@ -28,7 +28,7 @@ blink.elf/.bin 产物（.gitignore 已忽略）
 
 ```bash
 export PATH=/Users/a0000/micromamba/envs/cdev/bin:$PATH
-cd labs/00-toolchain-clang
+cd stm32/00-toolchain-clang
 make                # 编译 + 链接 + objcopy + size
 make dump           # 反汇编
 make sections       # 段表 + 程序头
@@ -173,4 +173,4 @@ ld.lld: error: undefined symbol: __aeabi_ldivmod
 - 真机烧录：`openocd -f interface/stlink.cfg -f target/stm32f1x.cfg` + `program blink.elf verify reset exit`
   或用 `llvm-objcopy` 出 .hex/.bin 后走 ST-Link Utility
 - PC13 是 Blue Pill 的板载 LED，且**低电平点亮**，所以代码里 `BSRR = 1<<13` 是灭、`1<<(13+16)` 是亮
-- 时钟树没配，跑的是复位后的 HSI 8MHz；真正的延时计数要等 labs/06 用 SysTick 校准
+- 时钟树没配，跑的是复位后的 HSI 8MHz；真正的延时计数要等 stm32/06 用 SysTick 校准

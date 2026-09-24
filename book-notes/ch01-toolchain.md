@@ -1,6 +1,6 @@
 # ch01 · 开发环境与心智模型：没有 OS、没有 GCC，C 怎么碰到硬件
 
-> 对应实验：`labs/00-toolchain-clang/`（Mac 上实测通过，产物 296 字节）
+> 对应实验：`stm32/00-toolchain-clang/`（Mac 上实测通过，产物 296 字节）
 > 本篇是整本书的"地基确认"——先把"C 语言凭什么能操作硬件"这件事说透，
 > 后面 ch02 启动文件、ch03 链接脚本、ch04 寄存器才有地方挂。
 
@@ -34,7 +34,7 @@ ISO C 标准只定义两样东西：**抽象机器**和**可观察行为**。
 这不是理论，是实测：
 
 ```
-$ make check-libc        # labs/00-toolchain-clang
+$ make check-libc        # stm32/00-toolchain-clang
 --- 未定义符号（谁被偷偷调用了）---
 U __aeabi_memcpy      ← struct big 整体赋值，编译器替你写了 memcpy 调用
 U __aeabi_dadd        ← 浮点乘加，M3 没有 FPU，走软件浮点
@@ -129,7 +129,7 @@ Linux 上跑一个 C 程序的真实路径：
   → 调 main(argc, argv)
 ```
 
-裸机上，这条链上**除了 main，其他每一环都没人做**。所以（`labs/00-toolchain-clang/startup.c`）：
+裸机上，这条链上**除了 main，其他每一环都没人做**。所以（`stm32/00-toolchain-clang/startup.c`）：
 
 | C 运行环境的前置条件 | Linux/PC | 裸机 STM32 | 谁做 |
 |---|---|---|---|
@@ -165,7 +165,7 @@ Linux 内核的 `start_kernel` 之前那一小段。** 只是内核那段的作�
 
 C 标准规定的是**语言**，不是**实现**。GCC 是符合标准的一种实现，Clang 是另一种。
 
-labs/00-toolchain-clang 全程没有任何 GNU 交叉工具链，实测可用：
+stm32/00-toolchain-clang 全程没有任何 GNU 交叉工具链，实测可用：
 
 | 环节 | 传统 GCC 方案 | 本次实测方案 | 为什么能换 |
 |---|---|---|---|
@@ -201,7 +201,7 @@ clang 23.1.0 + lld 23.1.0 就够）。这比在 Mac 上折腾 GNU 交叉工具�
 | 并发 | 多核 + 抢占，`volatile` 明显不够 | 单核 + 中断，`volatile` 通常够；上 DMA 就不够 |
 | 代码放哪 | 虚拟地址，页表映射 | 物理地址，Flash 就地执行（XIP） |
 
-## 六、最小可跑的样子（完整代码见 labs/00-toolchain-clang）
+## 六、最小可跑的样子（完整代码见 stm32/00-toolchain-clang）
 
 ```c
 /* main.c —— 三个手段全用上：地址常量、volatile、位运算 */
@@ -300,7 +300,7 @@ _estack = ORIGIN(RAM) + LENGTH(RAM);
 1. **ITM/SWO**：调试器通道，M3 支持，不改硬件，只在调试时可用；
 2. **semihosting**：`bkpt` 指令把 I/O 请求交给调试器，慢，调试用；
 3. **UART retarget**：自己实现 `_write`/`fputc`，往 USART 数据寄存器喂字节。
-   生产环境只有这条 —— 也就是 labs/04 的活。顺带体会一件事：
+   生产环境只有这条 —— 也就是 stm32/04 的活。顺带体会一件事：
    glibc 的 `printf` 底下是 `write(2)`，你的 `printf` 底下是 UART 寄存器，
    中间那层"驱动"在两边都是必须存在的，只是裸机上它叫"你写的函数"。
 </details>
