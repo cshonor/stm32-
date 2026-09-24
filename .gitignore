@@ -10,9 +10,18 @@ build/
 *.d
 *.a
 
+# 只作参考的上游克隆（不进版本库；需要时自己 clone，见各 lab 的 README）
+_refs/
+
+# genlink 现场生成的链接脚本（由 DEVICE + ld/devices.data 推导，属派生物）
+generated.*.ld
+
 # 调试器 / 烧录工具日志
 *.log
 openocd.cfg.bak
+
+# Python
+__pycache__/
 
 # IDE / 编辑器
 .vscode/
