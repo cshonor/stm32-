@@ -1,4 +1,4 @@
-# Makefile —— stm32/01-startup：从复位向量到 main
+# Makefile —— stm32/01-bare-metal：从复位向量到 main
 #
 # 与 stm32/00 同一套工具链（clang + ld.lld + llvm-*，不需要 arm-none-eabi-gcc），
 # 但这次同时构建两个变体，用来对照"启动文件用 C 写还是用汇编写"：

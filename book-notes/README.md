@@ -14,7 +14,7 @@
 | 篇 | 主题 | 对应实验 | 状态 |
 |---|---|---|---|
 | [ch01](ch01-toolchain.md) | 开发环境与心智模型：没有 OS、没有 GCC，C 怎么碰到硬件 | stm32/00-toolchain-clang | ✅ 主机侧实测 |
-| ch02 | 启动文件与向量表（上电到 main） | stm32/01-startup | ⬜ 待板子 |
+| ch02 | 启动文件与向量表（上电到 main） | stm32/01-bare-metal | ⬜ 待板子 |
 | ch03 | 链接脚本（Flash/RAM 布局） | stm32/02-linker | ⬜ 待板子 |
 | ch04 | 寄存器与 CMSIS 头（GPIO 点灯） | stm32/03-gpio-blink | ⬜ 待板子 |
 | ch05 | 时钟树与 UART（printf retarget） | stm32/04-uart-printf | ⬜ 待板子 |

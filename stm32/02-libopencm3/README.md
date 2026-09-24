@@ -1,6 +1,6 @@
-# 02b-libopencm3-blink —— 不写寄存器，第一次用「库」
+# 02-libopencm3 —— 不写寄存器，第一次用「库」
 
-> **旁支（库路线）**：目录编号 02b，与按章节编号的主线并行、互不替代。
+> **轨道二（库路线）**：与轨道一（`01-bare-metal` 手写寄存器）并行对照、互不替代。
 > 主线（`00/01/02-linker/03-gpio...`）是"对着 RM0008 自己写寄存器"；
 > 这条支线回答另一个问题：**如果有一个能读懂的库，同样的灯怎么写、代价是多少。**
 >
@@ -34,7 +34,7 @@ openocd/generic-stlink-f103.cfg  外接 ST-Link + 裸 F103 板用
 
 ```bash
 export PATH="$HOME/.local/arm-gnu-toolchain-14.2.rel1-darwin-arm64-arm-none-eabi/bin:$PATH"
-cd stm32/02b-libopencm3-blink
+cd stm32/02-libopencm3
 make            # 库没编会自动先编库，再编应用，一条命令到底
 ```
 
@@ -347,14 +347,14 @@ $ make size
 第一次 `make` 直接给了这么一句：
 
 ```
-make: *** .../stm32/02b-libopencm3-blink/../../third_party/libopencm3: Is a directory.  Stop.
+make: *** .../stm32/02-libopencm3/../../third_party/libopencm3: Is a directory.  Stop.
 ```
 
 用 `make -d` 看到真正发生的事：
 
 ```
 Reading makefile '/tmp/v3.mk'...
-Reading makefile '/Users/.../stm32/02b-libopencm3-blink/../../third_party/libopencm3' (search path)...
+Reading makefile '/Users/.../stm32/02-libopencm3/../../third_party/libopencm3' (search path)...
 ```
 
 make 把**库目录当成一个 makefile 去读了**。原因是我最初把注释写在了赋值行尾：
@@ -384,7 +384,7 @@ A=[x   ]  B=[x]          ← 三个空格进了值里
 会让生成出的链接脚本叫 `generated.stm32f103rb   .ld`（报错信息同样指不到原因）。
 （注明：这是 GNU make 4.4.1 的实测行为，与 macOS / Linux 无关。）
 
-## 烧录与调试（配置已就绪，**等板子**）
+## 烧录与调试（✅ 2026-09-24 真机实测通过）
 
 `make flash` / `make openocd` / `make gdb` 三条已经写好，配置分两份：
 
@@ -402,8 +402,16 @@ A=[x   ]  B=[x]          ← 三个空格进了值里
   （搬 `.data` → 清 `.bss` → 使能 `SCB_CCR_STKALIGN` → 调构造器 → 调 `main`）全在那里面，
   比在 `main` 停住有用得多。这也是它和 stm32/01 手写 `Reset_Handler` 的对照点。
 
-**尚未验证**：本机没有任何 ST-Link / USB 串口（`system_profiler` 无 ST-Link 设备），
-所以烧录链路、GDB 读寄存器、HardFault 的 CFSR/HFSR 都还是空白。
+真机实测记录（2026-09-24，NUCLEO-F103RB 板载 ST-Link V2J28M18）：
+
+```
+SWD DPIDR 0x1ba01477 · Cortex-M3 r1p1 检出 · device id 0x20036410 · flash 128 KiB
+** Programming Finished ** / ** Verified OK ** / ** Resetting Target **
+LD2(PA5) 闪烁确认；GPIOA_ODR 采样 7 次见 bit5 以 ~3Hz 翻转（0xa000↔0xa020）
+halt + 手写 BSRR 强制亮 3s / 灭 3s，肉眼确认 PA5=LD2 绿灯
+```
+
+**尚未验证**：GDB 断点单步启动序列、VTOR 搬迁、HardFault 的 CFSR/HFSR、栈哨兵。
 
 ## 坑点清单（按命中顺序，全部实测）
 

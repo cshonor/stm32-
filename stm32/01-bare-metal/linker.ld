@@ -1,4 +1,4 @@
-/* linker.ld —— stm32/01-startup 的地图
+/* linker.ld —— stm32/01-bare-metal 的地图
  *
  * 与 stm32/00 的差别只有三处，都是"启动"这件事逼出来的：
  *   1. 段名改用 .isr_vector（ST 官方 startup_stm32f103xb.s 用的名字；

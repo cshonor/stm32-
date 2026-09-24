@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # check_vectors.py —— 通用版向量表断言
 #
-# 和 stm32/01-startup/check_vectors.py 的分工：
-#   stm32/01 那份是「严格版」：手写启动文件时 24 项的符号名都是我自己起的，
+# 和 stm32/01-bare-metal/check_vectors.py 的分工：
+#   stm32/01-bare-metal 那份是「严格版」：手写启动文件时 24 项的符号名都是我自己起的，
 #                             所以能逐项比对 NMI_Handler / SVC_Handler ...
 #   这一份是「通用版」：向量表现在在库里（lib/cm3/vector.c），handler 由
 #                       irq2nvic_h 从 irq.json 生成，命名规则不同、项数也随芯片变，

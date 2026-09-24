@@ -1,4 +1,4 @@
-# 01-startup —— 从复位向量到 main：硬件只读两个字段
+# 01-bare-metal —— 从复位向量到 main：硬件只读两个字段
 
 本目录回答一个问题：**上电那一瞬间，CPU 到底读什么？**
 
@@ -38,7 +38,7 @@ blink_c.elf/.bin     C 版产物（320 字节）
 
 ```bash
 export PATH=/Users/a0000/micromamba/envs/cdev/bin:$PATH
-cd stm32/01-startup
+cd stm32/01-bare-metal
 
 make                 # 两个变体都构建 + size
 make vectors         # ★ 向量表断言（24 项逐项校验，不需要板子）
