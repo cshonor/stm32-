@@ -46,9 +46,18 @@ west 与 Linux 机制同源，实验与 freertos/ 一一对照，规划见 `zeph
 
 ## 硬件
 
-- 板：STM32F103C8T6（Blue Pill）或 NUCLEO-F103RB（待确认到货）
-  - 两者的链接脚本都由 genlink 按 `DEVICE` 现场生成：`make DEVICE=stm32f103c8` 就是 64K ROM，
-    默认 `stm32f103rb` 是 128K ROM（RAM 都是 20K，`_stack` 都是 0x20005000）
+- 板 1（已到手）：**NUCLEO-F103RB**（ST 官方 Nucleo-64）
+  - 板载 ST-Link/V2-1（macOS 免驱可直接用 openocd），用户 LED = **PA5**（LD2），
+    128K Flash / 20K RAM，`_stack` = 0x20005000
+  - 是 `stm32/02b-libopencm3-blink` 的默认配置（`DEVICE=stm32f103rb`，无需覆盖）
+- 板 2（正点原子 **F407 探索者**，STM32F407ZGT6）
+  - 168MHz / Cortex-M4F（带 FPU）/ 1MB Flash / 192KB RAM；LED0 = **PF9**、LED1 = PF10（低电平点亮）
+  - 接入步骤：① 库要重编家族 `make -C third_party/libopencm3 TARGETS=stm32/f4`；
+    ② 工程 `make DEVICE=stm32f407zg`（genlink 生成对应 ld，ROM 1M / RAM 128K+64K CCM）；
+    ③ main.c 的 LED 从 PA5 改成 PF9；④ F407 上电默认 HSI 16MHz，点灯够用，
+    要跑满 168MHz 需配 PLL（libopencm3 的 `rcc_clock_setup_pll`）
+  - 调试走 SWD 排针 + 外接 ST-Link（`openocd/generic-stlink-f103.cfg` 的思路同款，
+    target 换 `stm32f4x.cfg`）
 - 调试：ST-Link V2
   - OpenOCD 已装（xpack 0.12.0 darwin-arm64 原生构建，2.3 MB），脚本根在
     `~/.local/xpack-openocd-0.12.0-7/openocd/scripts`
