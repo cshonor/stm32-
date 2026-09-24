@@ -12,7 +12,7 @@
 
 1. **`make TARGETS=stm32/f1` 里的 `TARGETS` 到底是什么？** —— 它选的是「编哪些**家族**的库」，
    和「我的程序给哪颗**芯片**编」（`DEVICE`）是两件事。实测见 [§3](#实测-3targets-与-device-是两件事)。
-2. **网上那些 libopencm3 教程的 Makefile 还能用吗？** —— 不能，有两行已经指向不存在的文件。
+2. **网上那些 libopencm3 教程的 Makefile 还能用吗？** —— 不能，两处指向不存在的文件、一处路径写错。
    实测见 [§2](#实测-2三处教程已经过时的地方)。
 3. **用库的代价是多少？** —— 同样点 PA5：手写寄存器版镜像 296 字节，库版 1016 字节（3.4 倍）。
    实测见 [§7](#实测-7用库的代价296-b-vs-1016-b)。
@@ -108,12 +108,13 @@ xPack Open On-Chip Debugger 0.12.0+dev-02228-ge5888bda3-dirty (2025-10-04-22:45)
 ## 实测 2：三处「教程已经过时」的地方
 
 `git clone https://github.com/libopencm3/libopencm3.git` 之后，网上流传的 Makefile 模板里
-有两条现在**指向不存在的文件**（实测于子模块 commit `2da12dc9`）：
+有两条**指向不存在的文件**、一条路径写错（实测于子模块 commit `2da12dc9`）：
 
 | 教程里写的 | 实际情况 |
 |---|---|
 | `LDSCRIPT = $(OPENCM3_DIR)/lib/stm32/f1/stm32f103rb.ld` | `lib/stm32/f1/` 下**没有任何 .ld**（只有 adc.c / gpio.c / rcc.c…）。链接脚本由 `scripts/genlink.py` 读 `ld/devices.data` **现场生成** |
 | `include $(OPENCM3_DIR)/lib/libopencm3.rules.mk` | `lib/` 下没有这个文件。构建支持已迁到 `mk/`：`gcc-config.mk` / `gcc-rules.mk` / `genlink-config.mk` / `genlink-rules.mk` |
+| 库产物在 `lib/stm32/f1/libopencm3_stm32f1.a` | 实际在 **`lib/libopencm3_stm32f1.a`**（构建时 `AR libopencm3_stm32f1.a` 落在 `lib/` 下，不按家族分子目录） |
 
 官方的正确用法写在 `third_party/libopencm3/mk/README` 里（原文）：
 
