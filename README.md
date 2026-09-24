@@ -30,7 +30,7 @@ _refs/        只作参考的上游克隆，不进版本库（如 libopencm3-exa
 | 6 | 中断与 EXTI | labs/05-exti-button | ⬜ |
 | 7 | SysTick / 定时器 | labs/06-timer | ⬜ |
 | 8 | FreeRTOS：任务/调度/队列/信号量 | freertos/01-hello-task | ⬜ |
-| 旁支 | 库路线：libopencm3（≠ HAL） | labs/02b-stm32-blink | ✅ 主机侧实测 |
+| 旁支 | 库路线：libopencm3（≠ HAL） | labs/STM32 | ✅ 主机侧实测 |
 
 **第二遍（工程化路线）**：labs + freertos 全通后进 `zephyr/`——devicetree / Kconfig /
 west 与 Linux 机制同源，实验与 freertos/ 一一对照，规划见 `zephyr/README.md`。
@@ -52,7 +52,7 @@ west 与 Linux 机制同源，实验与 freertos/ 一一对照，规划见 `zeph
 - 调试：ST-Link V2
   - OpenOCD 已装（xpack 0.12.0 darwin-arm64 原生构建，2.3 MB），脚本根在
     `~/.local/xpack-openocd-0.12.0-7/openocd/scripts`
-  - 烧录配置两份：`labs/02b-stm32-blink/openocd/f103rb.cfg`（NUCLEO 板载 ST-Link）、
+  - 烧录配置两份：`labs/STM32/openocd/f103rb.cfg`（NUCLEO 板载 ST-Link）、
     `openocd/generic-stlink-f103.cfg`（外接 ST-Link + 裸板）
 - 交叉链（两条，按 lab 选）：
   - **不用装 GCC 的一条**（labs/00–01）：Mac 端实测走 micromamba `cdev` 里的
