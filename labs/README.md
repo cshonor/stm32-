@@ -18,7 +18,7 @@
     但镜像第 0 个字变成代码指令 —— 上电即崩且无任何编译期提示
   - 自检目标：`make vectors` / `compare` / `check-nokeep` / `check-isr` / `check-gpr` / `check-stack` / `check-lds`
 - 02-linker：链接脚本，看 .text/.data/.bss 落到 Flash/RAM 哪里（书 ch3）
-- 02b-libopencm3-blink：**旁支（库路线）**——引入第一个外部库依赖 libopencm3（git 子模块，
+- 02b-stm32-blink：**旁支（库路线）**——引入第一个外部库依赖 libopencm3（git 子模块，
   钉在 `2da12dc9`），不写寄存器也能点灯
   - 双轨对照：手写寄存器版镜像 296 B，库版 1016 B（含 336 B 完整向量表），`main` 反汇编可见
     `RCC_GPIOA=0x302` 这种"寄存器+位"打包编码
