@@ -1,4 +1,4 @@
-# labs —— 裸机实验
+# stm32 —— 裸机实验
 
 每个实验一个目录：`NN-name/`（startup.S / main.c / linker.ld / Makefile + README）。
 规则：**不依赖 HAL 库**，直接对着参考手册（RM0008）写寄存器；HAL 是第二遍学习的事。

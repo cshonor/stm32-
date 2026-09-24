@@ -32,7 +32,7 @@ _refs/        只作参考的上游克隆，不进版本库（如 libopencm3-exa
 | 8 | FreeRTOS：任务/调度/队列/信号量 | freertos/01-hello-task | ⬜ |
 | 旁支 | 库路线：libopencm3（≠ HAL） | stm32/STM32 | ✅ 主机侧实测 |
 
-**第二遍（工程化路线）**：labs + freertos 全通后进 `zephyr/`——devicetree / Kconfig /
+**第二遍（工程化路线）**：stm32 + freertos 全通后进 `zephyr/`——devicetree / Kconfig /
 west 与 Linux 机制同源，实验与 freertos/ 一一对照，规划见 `zephyr/README.md`。
 
 ## 与 LDD- 轨的概念对照（学两遍 = 记两遍）
@@ -53,7 +53,7 @@ west 与 Linux 机制同源，实验与 freertos/ 一一对照，规划见 `zeph
   - OpenOCD 已装（xpack 0.12.0 darwin-arm64 原生构建，2.3 MB），脚本根在
     `~/.local/xpack-openocd-0.12.0-7/openocd/scripts`
   - 烧录配置两份：`stm32/STM32/openocd/f103rb.cfg`（NUCLEO 板载 ST-Link）、
-    `openocd/generic-stlink-f103.cfg`（外接 ST-Link + 裸板）
+    `stm32/STM32/openocd/generic-stlink-f103.cfg`（外接 ST-Link + 裸板）
 - 交叉链（两条，按 lab 选）：
   - **不用装 GCC 的一条**（stm32/00–01）：Mac 端实测走 micromamba `cdev` 里的
     clang 23.1.0 + ld.lld 23.1.0 + llvm-objcopy/objdump/readelf，全程 `-nostdlib`，
