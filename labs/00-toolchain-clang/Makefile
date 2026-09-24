@@ -63,8 +63,13 @@ symbols: $(TARGET).elf
 	$(NM) -n --print-size $<
 
 # 自检：链接脚本能不能被 LLVM 链接器吃下去（GNU 语法兼容性）
-check-lds:
-	$(LD) -T linker.ld --verbose >/dev/null && echo "linker.ld: OK"
+# ⚠ 原来的写法 `ld.lld -T linker.ld --verbose` 是坏的：
+#    lld 不支持 --verbose，而且没有输入文件时直接报 "no input files"，
+#    退出码 2 —— 这条自检等于从来没跑过（labs/01 实测发现后修正）。
+#    有效验证 = 拿真实目标文件链接一次。
+check-lds: startup.o main.o
+	$(LD) -T linker.ld --gc-sections -o /tmp/check-lds.elf startup.o main.o \
+	  && echo "linker.ld: OK"
 
 # 探针：看编译器替这段 C 生成了哪些外部符号（裸机链接时会变成 undefined symbol）
 check-libc:

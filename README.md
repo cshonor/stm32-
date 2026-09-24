@@ -20,7 +20,7 @@ zephyr/       Zephyr 实验区（第二遍的工程化路线，最后走）
 |---|---|---|---|
 | 0 | 工具链（**不用 GCC**：clang + ld.lld + llvm 二进制工具） | labs/00-toolchain-clang | ✅ 主机侧实测 |
 | 1 | 开发环境（烧录链路 + OpenOCD/ST-Link） | 点不了灯先编过 | ⬜ 待板子 |
-| 2 | 启动文件、向量表、上电到 main | labs/01-startup | ⬜ |
+| 2 | 启动文件、向量表、上电到 main | labs/01-startup | ✅ 主机侧实测 |
 | 3 | 链接脚本（Flash/RAM 布局） | labs/02-linker | ⬜ |
 | 4 | 寄存器与 CMSIS 头（GPIO 点灯） | labs/03-gpio-blink | ⬜ |
 | 5 | 时钟树与 UART | labs/04-uart-printf | ⬜ |

@@ -5,6 +5,7 @@ build/
 *.bin
 *.hex
 *.map
+*.su
 *.lst
 *.d
 *.a

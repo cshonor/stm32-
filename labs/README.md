@@ -8,6 +8,12 @@
   - 全部命令已在 macOS 26.6.2 + micromamba `cdev`（clang 23.1.0 / lld 23.1.0）实测通过
   - 自检目标：`make check-lds` / `make check-libc` / `make check-eabi`
 - 01-startup：向量表 + 复位处理 + 跳 main（书 ch2）
+  - 汇编版 `startup.S`（主线）与 C 版 `startup_c.c` 双变体对照，实测**语义 24 项逐项等价**，
+    差异在可控性：C 版编译器会重排启动序列、`.text` 多 24 字节
+  - `check_vectors.py`：主机侧断言"上电时硬件会读到什么"（位置 / MSP / Thumb 位 / 保留位 / 镜像头）
+  - 反面教材 `linker-nokeep.ld`：只去掉 `KEEP(*(.isr_vector))`，链接不报错、
+    但镜像第 0 个字变成代码指令 —— 上电即崩且无任何编译期提示
+  - 自检目标：`make vectors` / `compare` / `check-nokeep` / `check-isr` / `check-gpr` / `check-stack` / `check-lds`
 - 02-linker：链接脚本，看 .text/.data/.bss 落到 Flash/RAM 哪里（书 ch3）
 - 03-gpio-blink：寄存器点灯，第一盏自己的灯（书 ch4）
 - 04-uart-printf：时钟树 + USART 串口 printf（书 ch5）
