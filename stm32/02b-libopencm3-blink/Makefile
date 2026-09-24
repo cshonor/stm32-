@@ -1,5 +1,5 @@
 # =============================================================================
-# stm32/STM32/Makefile
+# stm32/02b-libopencm3-blink/Makefile
 #
 # 这份 Makefile 只写「我的工程」，其余全部交给 libopencm3 自己的 mk/ 模块。
 # 契约来自 libopencm3/mk/README（官方原文）：

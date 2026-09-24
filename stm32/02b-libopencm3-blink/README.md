@@ -1,6 +1,6 @@
-# STM32 —— 不写寄存器，第一次用「库」
+# 02b-libopencm3-blink —— 不写寄存器，第一次用「库」
 
-> **旁支（库路线）**：目录直接叫 `STM32`，与 `stm32/` 下按章节编号的主线并行、互不替代。
+> **旁支（库路线）**：目录编号 02b，与按章节编号的主线并行、互不替代。
 > 主线（`00/01/02-linker/03-gpio...`）是"对着 RM0008 自己写寄存器"；
 > 这条支线回答另一个问题：**如果有一个能读懂的库，同样的灯怎么写、代价是多少。**
 >
@@ -34,7 +34,7 @@ openocd/generic-stlink-f103.cfg  外接 ST-Link + 裸 F103 板用
 
 ```bash
 export PATH="$HOME/.local/arm-gnu-toolchain-14.2.rel1-darwin-arm64-arm-none-eabi/bin:$PATH"
-cd stm32/STM32
+cd stm32/02b-libopencm3-blink
 make            # 库没编会自动先编库，再编应用，一条命令到底
 ```
 
@@ -347,14 +347,14 @@ $ make size
 第一次 `make` 直接给了这么一句：
 
 ```
-make: *** .../stm32/STM32/../../third_party/libopencm3: Is a directory.  Stop.
+make: *** .../stm32/02b-libopencm3-blink/../../third_party/libopencm3: Is a directory.  Stop.
 ```
 
 用 `make -d` 看到真正发生的事：
 
 ```
 Reading makefile '/tmp/v3.mk'...
-Reading makefile '/Users/.../stm32/STM32/../../third_party/libopencm3' (search path)...
+Reading makefile '/Users/.../stm32/02b-libopencm3-blink/../../third_party/libopencm3' (search path)...
 ```
 
 make 把**库目录当成一个 makefile 去读了**。原因是我最初把注释写在了赋值行尾：

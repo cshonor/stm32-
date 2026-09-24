@@ -3,7 +3,7 @@
 每个实验一个目录：`NN-name/`（startup.S / main.c / linker.ld / Makefile + README）。
 规则：**不依赖 HAL 库**，直接对着参考手册（RM0008）写寄存器；HAL 是第二遍学习的事。
 
-例外：`STM32` 是并行的**库路线**旁支，专门对比"用库"的写法与代价（libopencm3 不是 HAL，
+例外：`02b` 是并行的**库路线**旁支，专门对比"用库"的写法与代价（libopencm3 不是 HAL，
 是"能读完的寄存器库"），不替代主线章节实验。
 
 - 00-toolchain-clang：**不需要 arm-none-eabi-gcc**，用 clang + ld.lld 走通
@@ -18,7 +18,7 @@
     但镜像第 0 个字变成代码指令 —— 上电即崩且无任何编译期提示
   - 自检目标：`make vectors` / `compare` / `check-nokeep` / `check-isr` / `check-gpr` / `check-stack` / `check-lds`
 - 02-linker：链接脚本，看 .text/.data/.bss 落到 Flash/RAM 哪里（书 ch3）
-- STM32：**旁支（库路线）**——引入第一个外部库依赖 libopencm3（git 子模块，
+- 02b：**旁支（库路线）**——引入第一个外部库依赖 libopencm3（git 子模块，
   钉在 `2da12dc9`），不写寄存器也能点灯
   - 双轨对照：手写寄存器版镜像 296 B，库版 1016 B（含 336 B 完整向量表），`main` 反汇编可见
     `RCC_GPIOA=0x302` 这种"寄存器+位"打包编码
